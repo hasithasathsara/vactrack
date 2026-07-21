@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VacTrack</title>
+</head>
+<body>
+<h1>VacTrack</h1>
+<p id="message">Loading...</p>
+
+<script>
+    fetch("/api/hello")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("message").textContent = data;
+        })
+        .catch(error => {
+            document.getElementById("message").textContent = "Error: " + error;
+        });
+</script>
+</body>
+</html>

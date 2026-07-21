@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root {
+  --bg: #F6F9FE;
+  --surface: #FFFFFF;
+  --surface-alt: #EAF1FC;
+  --ink: #0A1B33;
+  --ink-muted: #55698A;
+  --primary: #1D4ED8;
+  --primary-dark: #10306E;
+  --primary-soft: #E4ECFC;
+  --border: #D7E3F5;
+  --success: #16A34A;
+  --error: #DC2626;
+  --card-grad-1: #10306E;
+  --card-grad-2: #1D4ED8;
+  --shadow: 0 20px 50px -20px rgba(16, 48, 110, 0.25);
+}
+
+[data-theme="dark"] {
+  --bg: #071022;
+  --surface: #0F1F3D;
+  --surface-alt: #132A52;
+  --ink: #EAF1FC;
+  --ink-muted: #93A8C9;
+  --primary: #5B93FF;
+  --primary-dark: #A9C2FF;
+  --primary-soft: #16244a;
+  --border: #1E3A66;
+  --success: #22C55E;
+  --error: #F87171;
+  --card-grad-1: #0A1B33;
+  --card-grad-2: #1D4ED8;
+  --shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .display {
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.mono { font-family: 'IBM Plex Mono', monospace; }
+
+a { color: var(--primary); }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px clamp(20px, 5vw, 56px);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--card-grad-2), var(--card-grad-1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-mark svg { width: 16px; height: 16px; }
+
+.theme-toggle {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  transition: background 0.3s ease;
+}
+
+.theme-toggle .knob {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(.65,0,.35,1);
+  transform: translateX(0);
+}
+
+[data-theme="dark"] .theme-toggle .knob { transform: translateX(24px); }
+.theme-toggle svg { width: 12px; height: 12px; stroke: white; fill: none; }
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  width: 100%;
+}
+
+.btn-primary:hover { background: var(--primary-dark); box-shadow: var(--shadow); }
+.btn-primary:active { transform: scale(0.99); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.field { margin-bottom: 18px; }
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-bottom: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field input, .field textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.field .hint { font-size: 12.5px; color: var(--ink-muted); margin-top: 6px; }
+.field .error-text { font-size: 12.5px; color: var(--error); margin-top: 6px; display: none; }
+.field.has-error input { border-color: var(--error); }
+.field.has-error .error-text { display: block; }
+
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+@media (max-width: 640px) {
+  .row-2 { grid-template-columns: 1fr; }
+}

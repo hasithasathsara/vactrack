@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create your VacTrack account</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <style>
+    .page {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      min-height: calc(100vh - 73px);
+    }
+
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 1fr; }
+      .card-side { order: -1; padding-bottom: 0 !important; }
+    }
+
+    .form-side {
+      padding: clamp(28px, 5vw, 72px);
+      display: flex;
+      justify-content: center;
+    }
+
+    .form-wrap { width: 100%; max-width: 460px; }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .form-wrap h1 {
+      font-size: clamp(26px, 3.4vw, 32px);
+      margin: 0 0 8px;
+      line-height: 1.15;
+    }
+
+    .form-wrap .lede {
+      color: var(--ink-muted);
+      font-size: 15px;
+      margin: 0 0 32px;
+      line-height: 1.5;
+    }
+
+    .foot-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    .foot-link a { font-weight: 600; text-decoration: none; }
+
+    .form-msg {
+      display: none;
+      padding: 13px 15px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .form-msg.show { display: block; }
+    .form-msg.err { background: rgba(220,38,38,0.12); color: var(--error); }
+    .form-msg.ok { background: rgba(22,163,74,0.12); color: var(--success); }
+
+    .card-side {
+      background: var(--surface-alt);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(28px, 5vw, 72px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-side::before {
+      content: "";
+      position: absolute;
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+      opacity: 0.12;
+      top: -120px; right: -160px;
+      border-radius: 50%;
+    }
+
+    .id-card {
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 1.58 / 1;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--card-grad-1), var(--card-grad-2));
+      box-shadow: var(--shadow);
+      color: #fff;
+      padding: 24px 26px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      transform: translateY(16px) rotate(-1.5deg);
+      animation: cardIn 0.7s cubic-bezier(.2,.8,.2,1) 0.15s forwards;
+    }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0) rotate(-1.5deg); }
+    }
+
+    .id-card::after {
+      content: "";
+      position: absolute;
+      top: -60%; left: -20%;
+      width: 60%; height: 220%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.16), transparent);
+      transform: rotate(20deg);
+    }
+
+    .id-top { display: flex; justify-content: space-between; align-items: flex-start; }
+
+    .id-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      opacity: 0.95;
+    }
+
+    .id-brand span { display: block; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 10px; opacity: 0.6; letter-spacing: 0.08em; margin-top: 2px; }
+
+    .id-qr {
+      width: 46px; height: 46px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.14);
+      border: 1px dashed rgba(255,255,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s ease, border-style 0.3s ease;
+    }
+
+    .id-qr svg { width: 26px; height: 26px; opacity: 0.55; transition: opacity 0.3s ease; }
+    .id-qr.active { background: #fff; border: 1px solid #fff; }
+    .id-qr.active svg { opacity: 1; }
+    .id-qr.active svg rect { fill: var(--card-grad-1); }
+
+    .id-mid { margin-top: 6px; }
+
+    .id-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 21px;
+      font-weight: 600;
+      min-height: 26px;
+    }
+
+    .id-name.placeholder { opacity: 0.4; font-weight: 500; }
+
+    .id-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+
+    .id-field-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 3px;
+    }
+
+    .id-field-value { font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.03em; }
+
+    .id-caption {
+      margin-top: 26px;
+      text-align: center;
+      color: var(--ink-muted);
+      font-size: 13.5px;
+      max-width: 320px;
+      line-height: 1.55;
+    }
+
+    .id-caption strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/" class="brand">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L3 6v6c0 5 3.8 9.2 9 10 5.2-.8 9-5 9-10V6l-9-4z" stroke="white" stroke-width="1.6"/>
+        <path d="M9 12l2 2 4-4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    VacTrack
+  </a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+    <span class="knob">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </span>
+  </button>
+</header>
+
+<div class="page">
+
+  <div class="form-side">
+    <div class="form-wrap">
+      <div class="eyebrow">Patient registration</div>
+      <h1>Create your vaccination record</h1>
+      <p class="lede">One account tracks every dose, every hospital visit, and gives you a QR code for same-day check-in.</p>
+
+      <div class="form-msg" id="formMsg"></div>
+
+      <form id="registerForm" novalidate>
+        <div class="field" id="f-name">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" placeholder="As it appears on your NIC" required>
+          <div class="error-text">Please enter your full name.</div>
+        </div>
+
+        <div class="row-2">
+          <div class="field" id="f-nic">
+            <label for="nic">NIC number</label>
+            <input type="text" id="nic" name="nic" placeholder="200012345678" required>
+            <div class="error-text">Enter a valid NIC number.</div>
+          </div>
+          <div class="field" id="f-dob">
+            <label for="dob">Date of birth</label>
+            <input type="date" id="dob" name="dob" required>
+            <div class="error-text">Please select your date of birth.</div>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field" id="f-email">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@gmail.com" required>
+            <div class="error-text">Enter a valid email address.</div>
+          </div>
+          <div class="field" id="f-phone">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="07X XXX XXXX" required>
+            <div class="error-text">Enter a valid phone number.</div>
+          </div>
+        </div>
+
+        <div class="field" id="f-address">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" placeholder="Street, city, district">
+        </div>
+
+        <div class="field" id="f-disabilities">
+          <label for="disabilities">Disabilities <span style="text-transform:none; font-weight:400;">(optional)</span></label>
+          <input type="text" id="disabilities" name="disabilities" placeholder="Leave blank if none">
+        </div>
+
+        <div class="row-2">
+          <div class="field" id="f-password">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="At least 8 characters" required>
+            <div class="error-text">Password must be at least 8 characters.</div>
+          </div>
+          <div class="field" id="f-confirm">
+            <label for="confirm">Confirm password</label>
+            <input type="password" id="confirm" name="confirm" placeholder="Re-enter password" required>
+            <div class="error-text">Passwords don't match.</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn">Create account</button>
+      </form>
+
+      <div class="foot-link">Already registered? <a href="login.html">Sign in</a></div>
+    </div>
+  </div>
+
+  <div class="card-side">
+    <div class="id-card" id="idCard">
+      <div class="id-top">
+        <div class="id-brand">VacTrack
+          <span>DIGITAL VACCINATION ID</span>
+        </div>
+        <div class="id-qr" id="idQr">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" fill="white"/><rect x="14" y="3" width="7" height="7" fill="white"/><rect x="3" y="14" width="7" height="7" fill="white"/><rect x="14" y="14" width="3" height="3" fill="white"/><rect x="18" y="18" width="3" height="3" fill="white"/></svg>
+        </div>
+      </div>
+      <div class="id-mid">
+        <div class="id-name placeholder" id="idName">Your name appears here</div>
+      </div>
+      <div class="id-bottom">
+        <div>
+          <div class="id-field-label">NIC</div>
+          <div class="id-field-value" id="idNic">— — — — — — — —</div>
+        </div>
+        <div>
+          <div class="id-field-label">Status</div>
+          <div class="id-field-value" id="idStatus">Pending</div>
+        </div>
+      </div>
+    </div>
+    <p class="id-caption">This card fills in as you register, and becomes <strong>your real vaccination record</strong> — with a working QR code — once your account is created.</p>
+  </div>
+
+</div>
+
+<script src="js/theme.js"></script>
+<script>
+  const nameInput = document.getElementById('name');
+  const nicInput = document.getElementById('nic');
+  const idName = document.getElementById('idName');
+  const idNic = document.getElementById('idNic');
+  const idQr = document.getElementById('idQr');
+  const idStatus = document.getElementById('idStatus');
+
+  function updateCard() {
+    const nameVal = nameInput.value.trim();
+    const nicVal = nicInput.value.trim();
+
+    if (nameVal) {
+      idName.textContent = nameVal;
+      idName.classList.remove('placeholder');
+    } else {
+      idName.textContent = 'Your name appears here';
+      idName.classList.add('placeholder');
+    }
+
+    idNic.textContent = nicVal ? nicVal : '— — — — — — — —';
+
+    const ready = nameVal.length > 1 && nicVal.length >= 10;
+    idQr.classList.toggle('active', ready);
+    idStatus.textContent = ready ? 'Ready' : 'Pending';
+  }
+
+  nameInput.addEventListener('input', updateCard);
+  nicInput.addEventListener('input', updateCard);
+
+  const form = document.getElementById('registerForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formMsg = document.getElementById('formMsg');
+
+  function setError(fieldId, hasError) {
+    document.getElementById(fieldId).classList.toggle('has-error', hasError);
+  }
+
+  function showMsg(text, type) {
+    formMsg.textContent = text;
+    formMsg.className = 'form-msg show ' + type;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formMsg.className = 'form-msg';
+
+    const name = nameInput.value.trim();
+    const nic = nicInput.value.trim();
+    const dob = document.getElementById('dob').value;
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const disabilities = document.getElementById('disabilities').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm').value;
+
+    let valid = true;
+    setError('f-name', !(name.length > 1)); if (name.length <= 1) valid = false;
+    setError('f-nic', !(nic.length >= 10)); if (nic.length < 10) valid = false;
+    setError('f-dob', !dob); if (!dob) valid = false;
+    setError('f-email', !/^\S+@\S+\.\S+$/.test(email)); if (!/^\S+@\S+\.\S+$/.test(email)) valid = false;
+    setError('f-phone', !(phone.length >= 9)); if (phone.length < 9) valid = false;
+    setError('f-password', !(password.length >= 8)); if (password.length < 8) valid = false;
+    setError('f-confirm', password !== confirm); if (password !== confirm) valid = false;
+
+    if (!valid) {
+      showMsg('Please fix the highlighted fields.', 'err');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Creating account…';
+
+    try {
+      const res = await fetch('/api/patients/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, nic, dateOfBirth: dob, email, phone, address,
+          disabilities: disabilities || null,
+          passwordHash: password
+        })
+      });
+
+      if (res.ok) {
+        idStatus.textContent = 'Active';
+        showMsg('Account created. Redirecting to sign in…', 'ok');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1400);
+      } else {
+        const errText = await res.text();
+        showMsg(errText || 'Something went wrong. Please try again.', 'err');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create account';
+      }
+    } catch (err) {
+      showMsg('Could not reach the server. Is the backend running?', 'err');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Create account';
+    }
+  });
+</script>
+
+</body>
+</html>
