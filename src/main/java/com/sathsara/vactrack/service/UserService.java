@@ -15,8 +15,12 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User registerPatient(User user) {
-        if (userRepository.existsByNic(user.getNic())) {
-            throw new IllegalArgumentException("A user with this NIC already exists.");
+        if (user.getIdType() == null || user.getIdNumber() == null || user.getIdNumber().isBlank()) {
+            throw new IllegalArgumentException("An ID type and ID number are required.");
+        }
+
+        if (userRepository.existsByIdNumber(user.getIdNumber())) {
+            throw new IllegalArgumentException("A user with this ID number already exists.");
         }
 
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));

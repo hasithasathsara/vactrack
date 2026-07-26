@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByNic(String nic);
+    Optional<User> findByIdNumber(String idNumber);
 
-    boolean existsByNic(String nic);
+    boolean existsByIdNumber(String idNumber);
 }

@@ -220,11 +220,26 @@
         </div>
 
         <div class="row-2">
-          <div class="field" id="f-nic">
-            <label for="nic">NIC number</label>
-            <input type="text" id="nic" name="nic" placeholder="200012345678" required>
-            <div class="error-text">Enter a valid NIC number.</div>
+<!--          <div class="field" id="f-nic">-->
+<!--            <label for="nic">NIC number</label>-->
+<!--            <input type="text" id="nic" name="nic" placeholder="200012345678" required>-->
+<!--            <div class="error-text">Enter a valid NIC number.</div>-->
+<!--          </div>-->
+
+<!--          add nic and birth cet date-->
+          <div class="field" id="f-idNumber">
+            <label for="idType">Identification</label>
+            <div style="display:flex; gap:8px;">
+              <select id="idType" style="flex:0 0 42%; padding:13px 10px; border-radius:10px; border:1.5px solid var(--border); background:var(--surface); color:var(--ink); font-family:'Inter',sans-serif; font-size:14px;">
+                <option value="NIC">NIC</option>
+                <option value="BIRTH_CERTIFICATE">Birth Cert. No.</option>
+              </select>
+              <input type="text" id="idNumber" name="idNumber" placeholder="200012345678" required style="flex:1;">
+            </div>
+            <div class="hint">Under 18 and don't have a NIC yet? Select Birth Certificate instead.</div>
+            <div class="error-text">Enter a valid ID number.</div>
           </div>
+
           <div class="field" id="f-dob">
             <label for="dob">Date of birth</label>
             <input type="date" id="dob" name="dob" required>
@@ -307,7 +322,7 @@
 <script src="js/theme.js"></script>
 <script>
   const nameInput = document.getElementById('name');
-  const nicInput = document.getElementById('nic');
+  const nicInput = document.getElementById('idNumber');
   const idName = document.getElementById('idName');
   const idNic = document.getElementById('idNic');
   const idQr = document.getElementById('idQr');
@@ -353,6 +368,7 @@
     formMsg.className = 'form-msg';
 
     const name = nameInput.value.trim();
+    const idType = document.getElementById('idType').value;
     const nic = nicInput.value.trim();
     const dob = document.getElementById('dob').value;
     const email = document.getElementById('email').value.trim();
@@ -364,7 +380,7 @@
 
     let valid = true;
     setError('f-name', !(name.length > 1)); if (name.length <= 1) valid = false;
-    setError('f-nic', !(nic.length >= 10)); if (nic.length < 10) valid = false;
+    setError('f-idNumber', !(nic.length >= 5)); if (nic.length < 5) valid = false;
     setError('f-dob', !dob); if (!dob) valid = false;
     setError('f-email', !/^\S+@\S+\.\S+$/.test(email)); if (!/^\S+@\S+\.\S+$/.test(email)) valid = false;
     setError('f-phone', !(phone.length >= 9)); if (phone.length < 9) valid = false;
@@ -384,7 +400,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name, nic, dateOfBirth: dob, email, phone, address,
+          name, idType, idNumber: nic, dateOfBirth: dob, email, phone, address,
           disabilities: disabilities || null,
           passwordHash: password
         })

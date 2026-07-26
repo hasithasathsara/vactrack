@@ -10,8 +10,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Enumerated(EnumType.STRING)
+    private IdType idType;
+
     @Column(unique = true)
-    private String nic;
+    private String idNumber;
 
     @Column(unique = true)
     private String username;
@@ -40,8 +43,12 @@ public class User {
 
     private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
 
+    public enum IdType {
+        NIC, BIRTH_CERTIFICATE
+    }
+
     public enum Role {
-        SUPER_ADMIN, SUB_ADMIN, NURSE, PATIENT
+        SUPER_ADMIN, SUB_ADMIN, INVENTORY_MANAGER, NURSE, PATIENT
     }
 
     public enum Status {
@@ -52,8 +59,11 @@ public class User {
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
 
-    public String getNic() { return nic; }
-    public void setNic(String nic) { this.nic = nic; }
+    public IdType getIdType() { return idType; }
+    public void setIdType(IdType idType) { this.idType = idType; }
+
+    public String getIdNumber() { return idNumber; }
+    public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
